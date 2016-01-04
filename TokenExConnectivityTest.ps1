@@ -1,7 +1,7 @@
 param (
-    [switch]$Test = $false,
-    [switch]$API = $true,
-    [switch]$Batch = $false
+    [switch]$Test,
+    [switch]$API,
+    [switch]$Batch
  )
 
 $prodAPIHost = "api.tokenex.com"
@@ -67,40 +67,47 @@ Function Check-HTTPS($hostName)
     }
 }
 
-
-If(!$Test)
+if(!$api  -and !$batch)
 {
-	if($api)
-	{
-		Write-Output("=============Checking $prodAPIHost=============")
-		Check-DNS $prodAPIHost
-		Check-Port $prodAPIHost $apiPort
-		Check-HTTPS $prodAPIHost
-	}
-	if($batch)
-	{
-		Write-Output("=============Checking $prodBatchHost=============")
-		Check-DNS $prodBatchHost
-		Check-Port $prodBatchHost $batchPort
-	}
+	Write-Output("You must supply a test. -batch or -api")
 }
 else
 {
-	if($api)
+	If(!$Test)
 	{
-		Write-Output("=============Checking $testAPIHost=============")
-		Check-DNS $testAPIHost
-		Check-Port $testAPIHost $apiPort
-		Check-HTTPS $testAPIHost
+		if($api)
+		{
+			Write-Output("=============Checking $prodAPIHost=============")
+			Check-DNS $prodAPIHost
+			Check-Port $prodAPIHost $apiPort
+			Check-HTTPS $prodAPIHost
+		}
+		if($batch)
+		{
+			Write-Output("=============Checking $prodBatchHost=============")
+			Check-DNS $prodBatchHost
+			Check-Port $prodBatchHost $batchPort
+		}
 	}
-	if($batch)
+	else
 	{
-		Write-Output("=============Checking $testBatchHost=============")
-		Check-DNS $testBatchHost
-		Check-Port $testBatchHost $batchPort
+		if($api)
+		{
+			Write-Output("=============Checking $testAPIHost=============")
+			Check-DNS $testAPIHost
+			Check-Port $testAPIHost $apiPort
+			Check-HTTPS $testAPIHost
+		}
+		if($batch)
+		{
+			Write-Output("=============Checking $testBatchHost=============")
+			Check-DNS $testBatchHost
+			Check-Port $testBatchHost $batchPort
+		}
 	}
+	Write-Output("=============All Checks Complete=============")
 }
-Write-Output("=============All Checks Complete=============")
+
 
 
 

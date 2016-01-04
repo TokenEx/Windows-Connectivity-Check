@@ -15,9 +15,9 @@ The result should look like this:
 ```
 =============Checking api.tokenex.com=========
 Checking DNS...
-DNS OK! api.tokenex.com Resolved to 146.88.98.
+DNS OK! api.tokenex.com Resolved to 146.88.98.172
 Checking Port...
-Port Check OK! TCP/443 is open to api.tokenex.
+Port Check OK! TCP/443 is open to api.tokenex.com
 Checking HTTPS...
 HTTPS OK! GET made to https://api.tokenex.com
 =============All Checks Complete=============
@@ -33,9 +33,9 @@ To test connectivity to batch.tokenex.com add the -Batch switch
 ```
 =============Checking batch.tokenex.com=======
 Checking DNS...
-DNS OK! batch.tokenex.com Resolved to 146.88.1
+DNS OK! batch.tokenex.com Resolved to 146.88.108.77
 Checking Port...
-Port Check OK! TCP/22 is open to batch.tokenex
+Port Check OK! TCP/22 is open to batch.tokenex.com
 =============All Checks Complete=============
 ```
 

@@ -1,11 +1,15 @@
 param (
     [switch]$Test,
     [switch]$API,
-    [switch]$Batch
+    [switch]$Batch,
+	[switch]$HTP
  )
 
+
+$prodHTPHost = "htp.tokenex.com"
 $prodAPIHost = "api.tokenex.com"
 $prodBatchHost = "batch.tokenex.com"
+$testHTPHost = "test-htp.tokenex.com"
 $testAPIHost = "test-api.tokenex.com"
 $testBatchHost = "test-batch.tokenex.com"
 $apiPort = "443"
@@ -60,6 +64,13 @@ Function Check-HTTPS($hostName)
         {
             Write-Output("HTTPS OK! GET made to "+ $uri)
         }
+		Elseif($hostName -eq $testAPIHost -or $hostName -eq $testHTPHost )
+		{
+			If($http.StatusCode -eq 404)
+			{
+				Write-Output("HTTPS OK! GET made to "+ $uri)
+			}
+		}
     }
     Catch
     {
@@ -67,9 +78,9 @@ Function Check-HTTPS($hostName)
     }
 }
 
-if(!$api  -and !$batch)
+if(!$api -and !$batch -and !$htp )
 {
-	Write-Output("You must supply a test. -batch or -api")
+	Write-Output("You must supply a test. -batch or -api or -htp")
 }
 else
 {
@@ -81,6 +92,13 @@ else
 			Check-DNS $prodAPIHost
 			Check-Port $prodAPIHost $apiPort
 			Check-HTTPS $prodAPIHost
+		}
+		if($htp)
+		{
+			Write-Output("=============Checking $prodHTPHost=============")
+			Check-DNS $prodHTPHost
+			Check-Port $prodHTPHost $apiPort
+			Check-HTTPS $prodHTPHost
 		}
 		if($batch)
 		{
@@ -98,6 +116,13 @@ else
 			Check-Port $testAPIHost $apiPort
 			Check-HTTPS $testAPIHost
 		}
+		if($htp)
+		{
+			Write-Output("=============Checking $testHTPHost=============")
+			Check-DNS $testHTPHost
+			Check-Port $testHTPHost $apiPort
+			Check-HTTPS $testHTPHost
+		}
 		if($batch)
 		{
 			Write-Output("=============Checking $testBatchHost=============")
@@ -107,8 +132,3 @@ else
 	}
 	Write-Output("=============All Checks Complete=============")
 }
-
-
-
-
-
